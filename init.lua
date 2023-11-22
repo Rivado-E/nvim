@@ -280,7 +280,7 @@ require('telescope').setup({
     layout_config = {
       vertical = {
         -- prompt_position = "top",
-        width=0.5,
+        width=.5,
       },
     },
     prompt_position = "top",  -- Set the prompt position to "top"
