@@ -245,7 +245,15 @@ require('lazy').setup({
       return vim.fn.executable 'make' == 1
     end,
   },
-
+  {
+    'akinsho/flutter-tools.nvim',
+    lazy = false,
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'stevearc/dressing.nvim', -- optional for vim.ui.select
+    },
+    config = true,
+  },
   {
     -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -291,6 +299,40 @@ require('telescope').setup({
   -- other configuration values here
 })
 require('harpoon').setup()
+require('lspconfig').dartls.setup{ 
+  cmd = { "dart", 'language-server', '--protocol=lsp' }, 
+}
+
+require('lspconfig').dartls.setup {
+  default_config = {
+    cmd = { 'dart', 'language-server', '--protocol=lsp' },
+    filetypes = { 'dart' },
+    root_dir = require 'lspconfig.util'.root_pattern 'pubspec.yaml',
+    init_options = {
+      onlyAnalyzeProjectsWithOpenFiles = true,
+      suggestFromUnimportedLibraries = true,
+      closingLabels = true,
+      outline = true,
+      flutterOutline = true,
+    },
+    settings = {
+      dart = {
+        completeFunctionCalls = true,
+        showTodos = true,
+      },
+    },
+  },
+  docs = {
+    description = [[
+https://github.com/dart-lang/sdk/tree/master/pkg/analysis_server/tool/lsp_spec
+
+Language server for dart.
+]],
+    default_config = {
+      root_dir = [[root_pattern("pubspec.yaml")]],
+    },
+  },
+}
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
@@ -298,6 +340,8 @@ require('harpoon').setup()
 -- require("telescope").load_extension('harpoon')
 -- trying to add harpoon - Rivado
 vim.keymap.set('n', '<leader>h', require("harpoon.mark").add_file)
+vim.keymap.set('n', 'L', require("harpoon.ui").nav_next)
+vim.keymap.set('n', 'H', require("harpoon.ui").nav_prev)
 vim.keymap.set('n', '<leader>.', require("harpoon.ui").nav_next)
 vim.keymap.set('n', '<leader>,', require("harpoon.ui").nav_prev)
 vim.keymap.set('n', '<leader>b', require("harpoon.ui").toggle_quick_menu)
