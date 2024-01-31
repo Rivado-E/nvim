@@ -201,6 +201,15 @@ require('lazy').setup({
   {'christoomey/vim-tmux-navigator'},
   {'mbbill/undotree'},
   {
+    "nvim-neorg/neorg",
+    run = ":Neorg sync-parsers", -- This is the important bit!
+    config = function()
+      require("neorg").setup {
+        -- configuration here
+      }
+    end,
+  },
+  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
@@ -394,6 +403,9 @@ vim.cmd('hi CursorLineNr gui=bold')
 vim.api.nvim_set_hl(0, 'CursorLineNr', { fg = 'black', bold = true })
 -- Set highlight on search
 vim.o.hlsearch = false
+
+-- cursor shape
+vim.opt.guicursor = "n-v-c-i:block"
 
 -- Make line numbers default
 vim.wo.number = true
