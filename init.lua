@@ -712,13 +712,22 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{
-		"startup-nvim/startup.nvim",
-		requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
-		config = function()
-			require("startup").setup()
-		end,
-	},
+	{ "mhinz/vim-startify" },
+	-- {
+	-- 	"startup-nvim/startup.nvim",
+	-- 	requires = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+	-- 	config = function()
+	-- 		require("startup").setup()
+	-- 	end,
+	-- },
+	-- {
+	-- 	"tjdevries/colorbuddy.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme("gruvbuddy")
+	-- 	end,
+	-- },
 	{
 		"RaphaeleL/my_vivid",
 		name = "vivid",
@@ -818,10 +827,12 @@ require("lazy").setup({
 		end,
 	},
 
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-	},
+	{ "beauwilliams/statusline.lua" },
+
+	-- {
+	-- 	"nvim-lualine/lualine.nvim",
+	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
+	-- },
 
 	{ -- Highlight, edit, and navigate code
 		"nvim-treesitter/nvim-treesitter",
@@ -905,7 +916,7 @@ require("lazy").setup({
 -- })
 -- require("onedark").load()
 require("harpoon").setup()
-require("lualine").setup({ options = { theme = "ayu_mirage" } })
+-- require("lualine").setup({ options = { theme = "ayu_mirage" } })
 -- local jdtlsConf = {
 --   cmd = { vim.fn.expand '~/.local/share/nvim/mason/bin/jdtls' },
 --   root_dir = vim.fs.dirname(vim.fs.find({ 'gradlew', '.git', 'mvnw' }, { upward = true })[1]),
