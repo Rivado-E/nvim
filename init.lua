@@ -38,7 +38,7 @@ vim.opt.cursorline = true
 vim.opt.breakindent = true
 
 -- Optional: Remap yanking to use system clipboard by default
-vim.api.nvim_set_keymap("n", "yyy", '"+yy', { noremap = true, silent = false })
+-- vim.api.nvim_set_keymap("n", "yyy", '"+yy', { noremap = true, silent = false })
 vim.api.nvim_set_keymap("v", "yy", '"+y', { noremap = true, silent = false })
 
 -- Save undo history
@@ -720,24 +720,71 @@ require("lazy").setup({
 	-- 		require("startup").setup()
 	-- 	end,
 	-- },
-	-- {
-	-- 	"tjdevries/colorbuddy.nvim",
-	-- 	lazy = false,
-	-- 	priority = 1000,
-	-- 	config = function()
-	-- 		vim.cmd.colorscheme("gruvbuddy")
-	-- 	end,
-	-- },
 	{
-		"RaphaeleL/my_vivid",
-		name = "vivid",
+		"folke/trouble.nvim",
+		opts = {}, -- for default options, refer to the configuration section for custom setup.
+		cmd = "Trouble",
+		keys = {
+			{
+				"<leader>xx",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
+			{
+				"<leader>xw",
+				"<cmd>Trouble diagnostics fiter.severity = vim.diagnostic.severity.WARN<cr>",
+				desc = "Buffer Diagnostics Warnings (Trouble)",
+			},
+			{
+				"<leader>xe",
+				"<cmd>Trouble diagnostics fiter.severity = vim.diagnostic.severity.ERROR<cr>",
+				desc = "Buffer Diagnostics Errors (Trouble)",
+			},
+			{
+				"<leader>xX",
+				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+				desc = "Buffer Diagnostics (Trouble)",
+			},
+			{
+				"<leader>cs",
+				"<cmd>Trouble symbols toggle focus=false<cr>",
+				desc = "Symbols (Trouble)",
+			},
+			{
+				"<leader>cl",
+				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+				desc = "LSP Definitions / references / ... (Trouble)",
+			},
+			{
+				"<leader>xL",
+				"<cmd>Trouble loclist toggle<cr>",
+				desc = "Location List (Trouble)",
+			},
+			{
+				"<leader>xQ",
+				"<cmd>Trouble qflist toggle<cr>",
+				desc = "Quickfix List (Trouble)",
+			},
+		},
+	},
+	{
+		"tjdevries/colorbuddy.nvim",
+		lazy = false,
 		priority = 1000,
-
 		config = function()
-			vim.cmd.colorscheme("my_vivid")
-			vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
+			vim.cmd.colorscheme("gruvbuddy")
 		end,
 	},
+	-- {
+	-- 	"RaphaeleL/my_vivid",
+	-- 	name = "vivid",
+	-- 	priority = 1000,
+	--
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme("my_vivid")
+	-- 		vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
+	-- 	end,
+	-- },
 	-- {
 	-- 	"rose-pine/neovim",
 	-- 	name = "rose-pine",
@@ -931,3 +978,6 @@ vim.keymap.set("n", "H", require("harpoon.ui").nav_prev)
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
+
+vim.diagnostic.config({ underline = false, update_in_insert = true })
+require("transparent").setup({ exclude_groups = { "CursorLine" } })
