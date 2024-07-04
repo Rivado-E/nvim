@@ -113,6 +113,10 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right win
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+vim.keymap.set("n", "<C-w>=", ":resize +5 <CR>", { desc = "grow" })
+vim.keymap.set("n", "<C-w>-", ":resize -5 <CR>", { desc = "shrink" })
+vim.keymap.set("n", "<C-w>.", ":vertical:resize +5 <CR>", { desc = "vertical grow" })
+vim.keymap.set("n", "<C-w>,", ":vertical:resize -5 <CR>", { desc = "vertical shrink" })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -579,16 +583,16 @@ require("lazy").setup({
 		},
 		opts = {
 			notify_on_error = false,
-			format_on_save = function(bufnr)
-				-- Disable "format_on_save lsp_fallback" for languages that don't
-				-- have a well standardized coding style. You can add additional
-				-- languages here or re-enable it for the disabled ones.
-				local disable_filetypes = { c = true, cpp = true }
-				return {
-					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-				}
-			end,
+			-- format_on_save = function(bufnr)
+			-- 	-- Disable "format_on_save lsp_fallback" for languages that don't
+			-- 	-- have a well standardized coding style. You can add additional
+			-- 	-- languages here or re-enable it for the disabled ones.
+			-- 	local disable_filetypes = { c = true, cpp = true }
+			-- 	return {
+			-- 		timeout_ms = 500,
+			-- 		lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+			-- 	}
+			-- end,
 			formatters_by_ft = {
 				lua = { "stylua" },
 				-- go = { "gofumpt" },
@@ -767,6 +771,25 @@ require("lazy").setup({
 			},
 		},
 	},
+	-- Lua
+
+	-- {
+	-- 	"olivercederborg/poimandres.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		require("poimandres").setup({
+	-- 			-- leave this setup function empty for default config
+	-- 			-- or refer to the configuration section
+	-- 			-- for configuration options
+	-- 		})
+	-- 	end,
+	--
+	-- 	-- optionally set the colorscheme within lazy config
+	-- 	init = function()
+	-- 		vim.cmd("colorscheme poimandres")
+	-- 	end,
+	-- },
 	{
 		"tjdevries/colorbuddy.nvim",
 		lazy = false,
@@ -808,7 +831,9 @@ require("lazy").setup({
 	-- 		vim.cmd.hi("Comment gui=none")
 	-- 	end,
 	-- },
-
+	-- {'m4xshen/autoclose.nvim'},
+	{"windwp/nvim-autopairs"},
+	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	{ "xiyaowong/transparent.nvim" },
 
 	-- { -- You can easily change to a different colorscheme.
@@ -874,8 +899,30 @@ require("lazy").setup({
 		end,
 	},
 
-	{ "beauwilliams/statusline.lua" },
-
+	-- { "beauwilliams/statusline.lua" },
+	{ "bluz71/nvim-linefly" },
+	-- {
+	-- 	"arsham/arshamiser.nvim",
+	-- 	dependencies = {
+	-- 		"arsham/arshlib.nvim",
+	-- 		"famiu/feline.nvim",
+	-- 		"rebelot/heirline.nvim",
+	-- 		"kyazdani42/nvim-web-devicons",
+	-- 		"lewis6991/gitsigns.nvim",
+	-- 	},
+	-- 	config = function()
+	-- 		-- ignore any parts you don't want to use
+	-- 		-- vim.cmd.colorscheme("arshamiser_light")
+	-- 		require("arshamiser.feliniser")
+	-- 		-- or:
+	-- 		-- require("arshamiser.heirliniser")
+	--
+	-- 		_G.custom_foldtext = require("arshamiser.folding").foldtext
+	-- 		vim.opt.foldtext = "v:lua.custom_foldtext()"
+	-- 		-- if you want to draw a tabline:
+	-- 		-- vim.api.nvim_set_option("tabline", [[%{%v:lua.require("arshamiser.tabline").draw()%}]])
+	-- 	end,
+	-- },
 	-- {
 	-- 	"nvim-lualine/lualine.nvim",
 	-- 	dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -979,5 +1026,15 @@ vim.keymap.set("n", "H", require("harpoon.ui").nav_prev)
 -- vim: ts=2 sts=2 sw=2 et
 vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
 
-vim.diagnostic.config({ underline = false, update_in_insert = true })
-require("transparent").setup({ exclude_groups = { "CursorLine" } })
+vim.diagnostic.config({ underline = false, update_in_insert = true, virtual_text = false })
+require("transparent").setup({ exclude_groups = { "CursorLine", "StatusLine" } })
+local highlight = vim.api.nvim_set_hl
+
+highlight(0, "LineflyNormal", { link = "DiffChange" })
+highlight(0, "LineflyInsert", { link = "WildMenu" })
+highlight(0, "LineflyVisual", { link = "IncSearch" })
+highlight(0, "LineflyCommand", { link = "WildMenu" })
+highlight(0, "LineflyReplace", { link = "ErrorMsg" })
+
+
+
