@@ -29,6 +29,7 @@ vim.opt.showmode = false
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 -- vim.opt.clipboard = "unnamedplus"
+vim.opt.showtabline = 2
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
@@ -251,7 +252,7 @@ require("lazy").setup({
 			},
 			{ "nvim-telescope/telescope-ui-select.nvim" },
 
-			-- Useful for getting pretty icons, but requires a Nerd Font.
+			-- -- Useful for getting pretty icons, but requires a Nerd Font.
 			{ "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
 			-- dart
 			{
@@ -835,7 +836,11 @@ require("lazy").setup({
 	{"windwp/nvim-autopairs"},
 	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	{ "xiyaowong/transparent.nvim" },
-
+	{
+		'crispgm/nvim-tabline',
+		dependencies = {'nvim-tree/nvim-web-devicons'},
+		config = true,
+	},
 	-- { -- You can easily change to a different colorscheme.
 	--   -- Change the name of the colorscheme plugin below, and then
 	--   -- change the command in the config to whatever the name of that colorscheme is.
