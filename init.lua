@@ -40,7 +40,6 @@ vim.opt.breakindent = true
 
 -- Optional: Remap yanking to use system clipboard by default
 -- vim.api.nvim_set_keymap("n", "yyy", '"+yy', { noremap = true, silent = false })
-vim.api.nvim_set_keymap("v", "yy", '"+y', { noremap = true, silent = false })
 
 -- Save undo history
 vim.opt.undofile = true
@@ -113,11 +112,20 @@ vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left wind
 vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+vim.api.nvim_set_keymap("v", "yy", '"+y', { noremap = true, silent = false })
+
+-- Rivaldo
 
 vim.keymap.set("n", "<C-w>=", ":resize +5 <CR>", { desc = "grow" })
 vim.keymap.set("n", "<C-w>-", ":resize -5 <CR>", { desc = "shrink" })
 vim.keymap.set("n", "<C-w>.", ":vertical:resize +5 <CR>", { desc = "vertical grow" })
 vim.keymap.set("n", "<C-w>,", ":vertical:resize -5 <CR>", { desc = "vertical shrink" })
+
+vim.keymap.set("n", "tp", ":tabprevious <CR>", { desc = "prev tab" })
+vim.keymap.set("n", "tn", ":tabnext <CR>", { desc = "next tab" })
+vim.keymap.set("n", "td", ":tabclose <CR>", { desc = "close tab" })
+vim.keymap.set("n", "tt", ":tabnew <CR>", { desc = "new tab" })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -445,6 +453,7 @@ require("lazy").setup({
 					-- Opens a popup that displays documentation about the word under your cursor
 					--  See `:help K` for why this keymap.
 					map("K", vim.lsp.buf.hover, "Hover Documentation")
+					map("H", vim.lsp.buf.hover, "Hover Documentation")
 
 					-- WARN: This is not Goto Definition, this is Goto Declaration.
 					--  For example, in C this would take you to the header.
@@ -584,18 +593,19 @@ require("lazy").setup({
 		},
 		opts = {
 			notify_on_error = false,
-			-- format_on_save = function(bufnr)
-			-- 	-- Disable "format_on_save lsp_fallback" for languages that don't
-			-- 	-- have a well standardized coding style. You can add additional
-			-- 	-- languages here or re-enable it for the disabled ones.
-			-- 	local disable_filetypes = { c = true, cpp = true }
-			-- 	return {
-			-- 		timeout_ms = 500,
-			-- 		lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
-			-- 	}
-			-- end,
+			format_on_save = function(bufnr)
+				-- Disable "format_on_save lsp_fallback" for languages that don't
+				-- have a well standardized coding style. You can add additional
+				-- languages here or re-enable it for the disabled ones.
+				local disable_filetypes = { c = true, cpp = true }
+				return {
+					timeout_ms = 500,
+					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+				}
+			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				ocaml = { "ocamlformat" },
 				-- go = { "gofumpt" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
@@ -788,17 +798,55 @@ require("lazy").setup({
 	--
 	-- 	-- optionally set the colorscheme within lazy config
 	-- 	init = function()
-	-- 		vim.cmd("colorscheme poimandres")
+	-- 		vim.cmd.colorscheme("poimandres")
+	-- 		vim.cmd.hi("Visual guibg=#404040")
+	-- 		vim.cmd.hi("lspreferenceread guibg=#404040")
+	-- 		vim.cmd.hi("LspReferencetext  guibg=#404040")
 	-- 	end,
 	-- },
+	-- {
+	-- 	"tjdevries/colorbuddy.nvim",
+	-- 	lazy = false,
+	-- 	priority = 1000,
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme("gruvbuddy")
+	-- 		vim.cmd.hi("Visual guibg=#404040")
+	-- 		vim.cmd.hi("lspreferenceread guibg=#404040")
+	-- 		vim.cmd.hi("LspReferencetext  guibg=#404040")
+	-- 		-- vim.cmd.hi("LspReferencewrite guibg=#778899")
+	-- 	end,
+	-- },
+	-- nvim v0.8.0
 	{
-		"tjdevries/colorbuddy.nvim",
-		lazy = false,
+		"kdheepak/lazygit.nvim",
+		cmd = {
+			"LazyGit",
+			"LazyGitConfig",
+			"LazyGitCurrentFile",
+			"LazyGitFilter",
+			"LazyGitFilterCurrentFile",
+		},
+		-- optional for floating window border decoration
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		-- setting the keybinding for LazyGit with 'keys' is recommended in
+		-- order to load the plugin when the command is run for the first time
+		keys = {
+			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+		},
+	},
+	{
+		"Rivado-E/vivid",
+		name = "vivid",
 		priority = 1000,
+
 		config = function()
-			vim.cmd.colorscheme("gruvbuddy")
+			vim.cmd.colorscheme("my_vivid")
+			vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
 		end,
 	},
+
 	-- {
 	-- 	"RaphaeleL/my_vivid",
 	-- 	name = "vivid",
@@ -819,6 +867,17 @@ require("lazy").setup({
 	-- 	end,
 	-- },
 	-- {
+	-- 	"ellisonleao/gruvbox.nvim",
+	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
+	-- 	init = function()
+	-- 		vim.cmd.colorscheme("gruvbox")
+	--
+	-- 		-- You can configure highlights by doing something like:
+	-- 		vim.cmd.hi("Comment gui=none")
+	-- 	end,
+	-- },
+
+	-- {
 	-- 	"navarasu/onedark.nvim",
 	--
 	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -829,16 +888,16 @@ require("lazy").setup({
 	-- 		vim.cmd.colorscheme("onedark")
 	--
 	-- 		-- You can configure highlights by doing something like:
-	-- 		vim.cmd.hi("Comment gui=none")
+	-- 		vim.cmd.hi("lspreferenceread gui=none")
 	-- 	end,
 	-- },
 	-- {'m4xshen/autoclose.nvim'},
-	{"windwp/nvim-autopairs"},
+	{ "windwp/nvim-autopairs" },
 	-- { "lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {} },
 	{ "xiyaowong/transparent.nvim" },
 	{
-		'crispgm/nvim-tabline',
-		dependencies = {'nvim-tree/nvim-web-devicons'},
+		"crispgm/nvim-tabline",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		config = true,
 	},
 	-- { -- You can easily change to a different colorscheme.
@@ -1033,6 +1092,7 @@ vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
 
 vim.diagnostic.config({ underline = false, update_in_insert = true, virtual_text = false })
 require("transparent").setup({ exclude_groups = { "CursorLine", "StatusLine" } })
+require("transparent").clear_prefix("Telescope")
 local highlight = vim.api.nvim_set_hl
 
 highlight(0, "LineflyNormal", { link = "DiffChange" })
@@ -1041,5 +1101,6 @@ highlight(0, "LineflyVisual", { link = "IncSearch" })
 highlight(0, "LineflyCommand", { link = "WildMenu" })
 highlight(0, "LineflyReplace", { link = "ErrorMsg" })
 
-
-
+vim.g.linefly_options = {
+	with_file_icon = false,
+}
