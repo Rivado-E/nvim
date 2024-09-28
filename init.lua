@@ -38,6 +38,8 @@ vim.opt.cursorline = true
 -- Enable break indent
 vim.opt.breakindent = true
 
+-- rivaldo
+vim.opt.conceallevel = 1
 -- Optional: Remap yanking to use system clipboard by default
 -- vim.api.nvim_set_keymap("n", "yyy", '"+yy', { noremap = true, silent = false })
 
@@ -213,22 +215,38 @@ require("lazy").setup({
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
 		config = function() -- This is the function that runs, AFTER loading
-			require("which-key").setup()
-
+			mappings = {
+				{ "<leader>c", group = "[C]ode" },
+				{ "<leader>c_", hidden = true },
+				{ "<leader>d", group = "[D]ocument" },
+				{ "<leader>d_", hidden = true },
+				{ "<leader>h", group = "Git [H]unk" },
+				{ "<leader>h_", hidden = true },
+				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>r_", hidden = true },
+				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>s_", hidden = true },
+				{ "<leader>t", group = "[T]oggle" },
+				{ "<leader>t_", hidden = true },
+				{ "<leader>w", group = "[W]orkspace" },
+				{ "<leader>w_", hidden = true },
+				{ "<leader>h", desc = "Git [H]unk", mode = "v" },
+			}
+			require("which-key").setup(mappings)
 			-- Document existing key chains
-			require("which-key").register({
-				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-				["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
-				["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
-			})
+			-- require("which-key").register({
+			-- 	["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
+			-- 	["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
+			-- 	["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
+			-- 	["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
+			-- 	["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+			-- 	["<leader>t"] = { name = "[T]oggle", _ = "which_key_ignore" },
+			-- 	["<leader>h"] = { name = "Git [H]unk", _ = "which_key_ignore" },
+			-- })
 			-- visual mode
-			require("which-key").register({
-				["<leader>h"] = { "Git [H]unk" },
-			}, { mode = "v" })
+			-- require("which-key").register({
+			-- 	["<leader>h"] = { "Git [H]unk" },
+			-- }, { mode = "v" })
 		end,
 	},
 
@@ -606,6 +624,8 @@ require("lazy").setup({
 			formatters_by_ft = {
 				lua = { "stylua" },
 				ocaml = { "ocamlformat" },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
 				-- go = { "gofumpt" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
@@ -817,6 +837,47 @@ require("lazy").setup({
 	-- 	end,
 	-- },
 	-- nvim v0.8.0
+	-- {
+	-- 	"MeanderingProgrammer/render-markdown.nvim",
+	-- 	opts = {},
+	-- 	dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+	-- 	-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+	-- },
+	{
+		"epwalsh/obsidian.nvim",
+		version = "*", -- recommended, use latest release instead of latest commit
+		lazy = true,
+		ft = "markdown",
+		-- Replace the above line with this if you only want to load obsidian.nvim for markdown files in your vault:
+		-- event = {
+		--   -- If you want to use the home shortcut '~' here you need to call 'vim.fn.expand'.
+		--   -- E.g. "BufReadPre " .. vim.fn.expand "~" .. "/my-vault/*.md"
+		--   -- refer to `:h file-pattern` for more examples
+		--   "BufReadPre path/to/my-vault/*.md",
+		--   "BufNewFile path/to/my-vault/*.md",
+		-- },
+		dependencies = {
+			-- Required.
+			"nvim-lua/plenary.nvim",
+
+			-- see below for full list of optional dependencies 👇
+		},
+		opts = {
+			workspaces = {
+				{
+					name = "personal",
+					path = "~/vaults/personal",
+				},
+				{
+					name = "work",
+					path = "~/vaults/work",
+				},
+			},
+
+			-- see below for full list of options 👇
+		},
+	},
 	{
 		"kdheepak/lazygit.nvim",
 		cmd = {
@@ -836,16 +897,16 @@ require("lazy").setup({
 			{ "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
 		},
 	},
-	{
-		"Rivado-E/vivid",
-		name = "vivid",
-		priority = 1000,
-
-		config = function()
-			vim.cmd.colorscheme("my_vivid")
-			vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
-		end,
-	},
+	-- {
+	-- 	"Rivado-E/vivid",
+	-- 	name = "vivid",
+	-- 	priority = 1000,
+	--
+	-- 	config = function()
+	-- 		vim.cmd.colorscheme("my_vivid")
+	-- 		vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
+	-- 	end,
+	-- },
 
 	-- {
 	-- 	"RaphaeleL/my_vivid",
@@ -857,15 +918,18 @@ require("lazy").setup({
 	-- 		vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
 	-- 	end,
 	-- },
-	-- {
-	-- 	"rose-pine/neovim",
-	-- 	name = "rose-pine",
-	-- 	priority = 1000,
-	--
-	-- 	config = function()
-	-- 		vim.cmd.colorscheme("rose-pine")
-	-- 	end,
-	-- },
+	{
+		"rose-pine/neovim",
+		name = "rose-pine",
+		priority = 1000,
+
+		config = function()
+			vim.cmd.colorscheme("rose-pine")
+			disable_background = true
+			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+		end,
+	},
 	-- {
 	-- 	"ellisonleao/gruvbox.nvim",
 	-- 	priority = 1000, -- Make sure to load this before all the other start plugins.
@@ -996,7 +1060,17 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
+			ensure_installed = {
+				"bash",
+				"c",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"vim",
+				"vimdoc",
+				"markdown_inline",
+			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
@@ -1088,7 +1162,7 @@ vim.keymap.set("n", "H", require("harpoon.ui").nav_prev)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
+-- vim.cmd([[highlight CursorLine guibg=#252525 guifg=NONE]])
 
 vim.diagnostic.config({ underline = false, update_in_insert = true, virtual_text = false })
 require("transparent").setup({ exclude_groups = { "CursorLine", "StatusLine" } })
@@ -1101,6 +1175,51 @@ highlight(0, "LineflyVisual", { link = "IncSearch" })
 highlight(0, "LineflyCommand", { link = "WildMenu" })
 highlight(0, "LineflyReplace", { link = "ErrorMsg" })
 
+-- require('obsidian').setup({
+--     ui = { enable = false },
+-- })
+
 vim.g.linefly_options = {
 	with_file_icon = false,
 }
+
+insert_markdown_table = function()
+	local get_size = function()
+		local INPUT_CANCELLED = "~~~INPUT-CANCELLED~~~"
+		local input =
+			vim.fn.input({ prompt = "Size of the table - columns by rows (e.g. 2x3)", cancelreturn = INPUT_CANCELLED })
+		if input == INPUT_CANCELLED then
+			-- early return if the user cancels the input
+			return nil, nil
+		end
+		local string_column, string_row = input:match("([^x]+)x([^x]+)")
+		return tonumber(string_column), tonumber(string_row)
+	end
+	local columns, rows = get_size()
+	if columns == nil or rows == nil or columns < 1 or rows < 1 then
+		vim.api.nvim_err_writeln("Invalid input. Please provide a valid size (e.g. 2x3)")
+		return
+	end
+
+	-- Create a row
+	-- @param row number
+	-- @param header boolean
+	local create_row = function(length, header)
+		local row = "|"
+		for _ = 1, length do
+			row = row .. (header and " ---" or "   ") .. " |"
+		end
+		return row
+	end
+
+	local rows_table = {}
+
+	-- First row with header row
+	table.insert(rows_table, create_row(columns, false))
+	table.insert(rows_table, create_row(columns, true))
+	for _ = 2, rows do
+		table.insert(rows_table, create_row(columns, false))
+	end
+
+	vim.api.nvim_put(rows_table, "l", true, false)
+end
