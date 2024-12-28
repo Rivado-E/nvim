@@ -5,8 +5,9 @@ vim.g.maplocalleader = " "
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- Terminal
-vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", { desc = "Toggle floating terminal" })
-vim.keymap.set("t", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", { desc = "Toggle floating terminal" })
+-- vim.keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", { desc = "Toggle floating terminal" })
+vim.keymap.set("n", "<leader>tt", "<cmd>FloatermToggle<CR>", { desc = "Toggle floating terminal" })
+vim.keymap.set("t", "<leader>tt", "<cmd>FloatermToggle<CR>", { desc = "Toggle floating terminal" })
 
 
 -- Terminal

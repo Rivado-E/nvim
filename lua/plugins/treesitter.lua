@@ -13,6 +13,7 @@ return { -- Highlight, edit, and navigate code
             "vim",
             "vimdoc",
             "markdown_inline",
+            -- "go"
         },
         -- Autoinstall languages that are not installed
         auto_install = true,

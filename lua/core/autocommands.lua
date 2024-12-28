@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		vim.api.nvim_set_hl(0, "TelescopeResultsNormal", { bg = "none" })
 		vim.api.nvim_set_hl(0, "Fidget", { bg = "none" })
 		vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2a2a2a" })
-		vim.api.nvim_set_hl(0, "StatusLine", { bg = "#252525"})
+		-- vim.api.nvim_set_hl(0, "StatusLine", { bg = "#252525"})
 
 
 

@@ -1,5 +1,14 @@
 -- Standalone plugins with less than 10 lines of config go here
 return {
+
+	-- {
+	-- 	"rcarriga/nvim-notify",
+	-- 	config = function()
+	-- 		vim.notify = require("notify")
+	-- 		notify = require("notify")
+	-- 		notify = require("notify")
+	-- 	end,
+	-- },
 	{
 		"xiyaowong/transparent.nvim",
 		config = function()
@@ -9,7 +18,7 @@ return {
 			require("transparent").setup(opts)
 		end,
 	},
-	{ "danielo515/nvim-treesitter-reason" },
+	-- { "danielo515/nvim-treesitter-reason" },
 	{
 		"crispgm/nvim-tabline",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
