@@ -17,6 +17,8 @@ require("lazy").setup({
 	require("plugins.nightfly"),
 	-- require("plugins.poimandress"),
 	require("plugins.lualine"),
+	-- require("plugins.mini"),
+	-- require("plugins.statusline"),
 	require("plugins.telescope"),
 	require("plugins.misc"),
 	require("plugins.lsp"),

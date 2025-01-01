@@ -38,6 +38,7 @@ return {
 			float = {
 				padding = 3,
 				border = "none",
+				max_width = 100,
 			},
 			-- columns = {
 			-- 	"icon",
