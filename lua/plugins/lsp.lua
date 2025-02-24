@@ -259,7 +259,7 @@ return {
 		-- 		border = "rounded",
 		-- 	},
 		-- })
-		vim.diagnostic.config({ virtual_text = false })
+		-- vim.diagnostic.config({ virtual_text = false })
 		vim.diagnostic.config({
 			float = {
 				-- border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
@@ -270,7 +270,22 @@ return {
 				severity_sort = true,
 				-- focusable = false,
 			},
+
+			severity_sort = true,
+			virtual_text = true,
 		})
+
+		-- Show only errors and critical issues
+		-- vim.diagnostic.config({
+		-- 	severity_sort = true,
+		-- 	virtual_text = {
+		-- 		severity = {
+		-- 			min = vim.diagnostic.severity.INFO, -- Show only errors
+		-- 			max = vim.diagnostic.severity.ERROR, -- Exclude warnings and hints
+		-- 		},
+		-- 	},
+		-- })
+
 		-- Set default border for all floating windows
 		local original_open_floating_preview = vim.lsp.util.open_floating_preview
 		vim.lsp.util.open_floating_preview = function(contents, syntax, opts, ...)

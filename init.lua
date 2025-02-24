@@ -32,7 +32,7 @@ require("lazy").setup({
 	require("plugins.lazygit"),
 	require("plugins.obsidian"),
 	require("plugins.luau"),
-	-- require("plugins.flash"),
+	require("plugins.flash"),
 	require("plugins.oil"),
 	require("plugins.treesitter"),
 	require("plugins.floaterm"),
